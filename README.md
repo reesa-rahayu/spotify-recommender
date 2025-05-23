@@ -381,29 +381,28 @@ Untuk mengevaluasi performa sistem rekomendasi, digunakan beberapa metrik umum d
 
 1. **Precision@k**  
    Mengukur proporsi lagu yang relevan di antara top-`k` hasil rekomendasi.  
-   '''math
-   \text{Precision@k} = \frac{\text{Jumlah rekomendasi relevan}}{k}
-   '''
+   $`\text{Precision@k} = \frac{\text{Jumlah rekomendasi relevan}}{k}`$
 
 2. **Recall@k**  
    Mengukur proporsi lagu relevan yang berhasil ditemukan oleh sistem dalam `k` rekomendasi.  
+   Rumus:
    $`\text{Precision@k} = \frac{\text{Jumlah rekomendasi relevan}}{k}`$
 
 3. **F1@k**  
    Harmonik rata-rata dari precision dan recall, digunakan untuk menyeimbangkan keduanya.  
-   $$ \text{F1@k} = \frac{2 \cdot \text{Precision@k} \cdot \text{Recall@k}}{\text{Precision@k} + \text{Recall@k}} $$
+   $` \text{F1@k} = \frac{2 \cdot \text{Precision@k} \cdot \text{Recall@k}}{\text{Precision@k} + \text{Recall@k}} `$
 
 4. **MAP@k (Mean Average Precision)**  
    Mengukur rata-rata presisi kumulatif berdasarkan posisi item yang relevan dalam daftar.  
-   $$ \text{MAP@k} = \frac{1}{|R|} \sum\_{i \in R} \frac{\text{Jumlah hits sampai i}}{i} $$  
+   $` \text{MAP@k} = \frac{1}{|R|} \sum\_{i \in R} \frac{\text{Jumlah hits sampai i}}{i} `$  
    Di mana $R$ adalah daftar item relevan dalam top-`k`.
 
 5. **NDCG@k (Normalized Discounted Cumulative Gain)**  
    Mengukur relevansi rekomendasi dengan mempertimbangkan posisi.  
-   $$ \text{NDCG@k} = \frac{DCG@k}{IDCG@k} $$  
+   $` \text{NDCG@k} = \frac{DCG@k}{IDCG@k} `$  
    Di mana:  
-   $$ DCG@k = \sum\_{i=1}^k \frac{rel_i}{\log_2(i+1)} $$  
-   $$ IDCG@k = \text{DCG dari urutan ideal} $$
+   $` DCG@k = \sum\_{i=1}^k \frac{rel_i}{\log_2(i+1)} `$  
+   $` IDCG@k = \text{DCG dari urutan ideal} `$
 
 ---
 
