@@ -12,7 +12,7 @@ Proyek ini bertujuan untuk membangun sistem rekomendasi lagu berdasarkan fitur-f
 
 Dalam era di mana personalisasi adalah kunci pengalaman pengguna, sistem rekomendasi memainkan peran penting dalam menyaring konten yang relevan dari lautan pilihan yang tersedia. Dengan menganalisis karakteristik musik seperti danceability, valence, tempo, dan energi, kita dapat memahami pola dan preferensi pengguna secara lebih baik [[2]](https://doi.org/10.1109/IIHC55949.2022.10060806).
 
-Melalui pendekatan berbasis content-based filtering dan popularity-based ranking, sistem ini memberikan pengalaman rekomendasi yang lebih terarah dan personal, bahkan tanpa data historis pengguna. Model ini dibangun menggunakan fitur numerik dari lagu serta analisis korelasinya untuk meningkatkan akurasi dan relevansi rekomendasi.
+Melalui pendekatan berbasis **content-based filtering** dan **popularity-based ranking**, sistem ini memberikan pengalaman rekomendasi yang lebih terarah dan personal, bahkan tanpa data historis pengguna. Model ini dibangun menggunakan fitur numerik dari lagu serta analisis korelasinya untuk meningkatkan akurasi dan relevansi rekomendasi.
 
 ## 🧠 Business Understanding
 
@@ -26,22 +26,31 @@ Melalui pendekatan berbasis content-based filtering dan popularity-based ranking
 
 - Mengembangkan sistem rekomendasi lagu berbasis konten (content-based) yang mampu menyarankan lagu-lagu serupa berdasarkan fitur musik, tanpa perlu histori pendengaran pengguna.
 - Menggunakan algoritma K-Nearest Neighbors (KNN) dengan metrik cosine similarity untuk mengukur kedekatan antar lagu berdasarkan fitur seperti danceability, valence, tempo, energy, dll.
-- Memberikan hasil rekomendasi yang personal dan relevan berdasarkan karakteristik lagu input.
+- Menyediakan hasil rekomendasi yang relevan berdasarkan karakteristik lagu input, serta mengeksplorasi metode hybrid dengan mempertimbangkan popularitas dan karakteristik lagu.
 
 ### Solution statements
 
-- Membangun sistem rekomendasi menggunakan KNN berbasis fitur musik
-  - Dataset Spotify digunakan untuk mengekstraksi fitur-fitur numerik dari lagu seperti danceability, energy, valence, tempo, dan lain-lain.
-  - Fitur-fitur ini dinormalisasi menggunakan MinMaxScaler, kemudian digunakan dalam model KNN untuk menghitung kemiripan antar lagu.
-  - Sistem mengembalikan daftar lagu paling mirip dengan lagu input berdasarkan kemiripan vektor fitur.
+- Membangun sistem rekomendasi berbasis content-based recommendation menggunakan fitur pada dataset.
+  - Menggunakan dataset Spotify untuk mengekstraksi fitur numerik dari lagu seperti danceability, energy, valence, tempo, acousticness, dll.
+  - Fitur-fitur direduksi dimensinya menggunakan PCA untuk menghindari overfitting dan meningkatkan efisiensi model.
+  - Vektor hasil reduksi digunakan dalam model KNN dan clustering (K-Means) untuk menghitung kemiripan antar lagu.
+  - Sistem mengembalikan daftar lagu paling mirip dengan lagu input berdasarkan kedekatan vektor fitur menggunakan cosine similarity.
 - Melakukan exploratory data analysis (EDA) dengan visualisasi distribusi fitur numerik (histogram, boxplot), identifikasi outlier (misalnya pada durasi lagu), genre yang dominan, dan korelasi antar fitur serta analisis popularitas berdasarkan genre dan fitur lainnya
 - Membersihkan dan Mempersiapkan Data
   - Menghapus duplikat, menangani missing value, dan memfilter lagu berdasarkan durasi yang masuk akal (45 detik hingga 10 menit)
-  - Melakukan encoding pada fitur kategorikal (explicit, track_genre) dan normalisasi fitur numerik agar model KNN bekerja optimal
-- Menambahkan Sistem Rekomendasi Berdasarkan Popularitas
-  Selain rekomendasi berbasis fitur, sistem juga dapat menyarankan lagu berdasarkan tingkat popularitas sebagai baseline sederhana.
+- Menambahkan label cluster berdasarkan fitur musik untuk keperluan evaluasi dan filter tambahan pada sistem rekomendasi.
+- Mencari model yang dapat memberikan rekomendasi paling relevan diantaranya.
+  - Baseline Model – Popularity-Based Recommendation:
+    Menambahkan sistem rekomendasi berbasis popularitas sebagai baseline sederhana, dengan mengurutkan lagu berdasarkan skor popularitas tertinggi.
+  - KKN Model:
+    Mencari lagu dengan menghitung kemiripan lagu berdasarkan jarak `cosine` antar lagu.
+  - Cluster Model:
+    Menghitung kemiripan lagu dengan mengelompokkannya menggunakan K-Means. Rekomendasi diberikan berdasarkan kesamaan cluster antar lagu.
+  - Hybrid Recommendation System:
+    Menggabungkan skor similarity KNN dan popularitas untuk membuat model hybrid.
+- Mengevaluasi tiap model menggunakan genre lagu sebagai ground truth dan metrik seperti Precision@5, Recall@5, F1@5, MAP@5, dan NDCG@5. Hasil menunjukkan bahwa model clustering memberikan performa terbaik dalam menghasilkan lagu relevan dalam top-5, sedangkan KNN dan hybrid model perlu perbaikan lebih lanjut untuk meningkatkan relevansi hasil.
 
-Dengan pendekatan ini, sistem rekomendasi yang dibangun dapat membantu pengguna menemukan lagu-lagu yang sesuai dengan selera mereka tanpa memerlukan histori pengguna, serta memberikan hasil yang cepat, efisien, dan relevan.
+Dengan pendekatan ini, sistem rekomendasi yang dibangun dapat membantu pengguna menemukan lagu-lagu yang sesuai dengan selera mereka tanpa perlu histori pengguna, serta memberikan hasil yang cepat dan berbasis fitur musik.
 
 ## 📑 Data Understanding
 
@@ -197,18 +206,33 @@ Rekomendasi berdasarkan tingkat popularitas lagu. Sistem ini menyarankan lagu-la
 
 **Hasil Rekomendasi**
 
-Input lagu
+Input lagu :
 |track_name| artists| popularity| track_genre| duration_ms|
 |--|--|--|--|--|
 |Blinding Lights | The Weeknd |91 |pop | 200040|
 
-| Lagu                                  | Artists                     |
+Hasil:
+| Lagu | Artists |
 | ------------------------------------- | --------------------------- |
-| Unholy (feat. Kim Petras)             | Sam Smith, Kim Petras       |
-| Quevedo: Bzrp Music Sessions, Vol. 52 | Bizarrap, Quevedo           |
-| La Bachata                            | Manuel Turizo               |
-| I'm Good (Blue)                       | David Guetta, Bebe Rexha    |
-| Me Porto Bonito                       | Bad Bunny, Chencho Corleone |
+| Unholy (feat. Kim Petras) | Sam Smith, Kim Petras |
+| Quevedo: Bzrp Music Sessions, Vol. 52 | Bizarrap, Quevedo |
+| La Bachata | Manuel Turizo |
+| I'm Good (Blue) | David Guetta, Bebe Rexha |
+| Me Porto Bonito | Bad Bunny, Chencho Corleone |
+
+Input lagu:
+|track_name| artists| popularity| track_genre| duration_ms|
+|--|--|--|--|--|
+|Out of Phase| Proem |15 |pop | 227040|
+
+Hasil:
+| track_name | artists |
+|--|--|
+| Unholy (feat. Kim Petras) | Sam Smith, Kim Petras |
+| Quevedo: Bzrp Music Sessions, Vol. 52 | Bizarrap, Quevedo |
+| La Bachata | Manuel Turizo |
+| I'm Good (Blue) | David Guetta, Bebe Rexha|
+| Tití Me Preguntó | Bad Bunny|
 
 ##### 2. 🧠 K-Nearest Neighbors / KNN (Content-Based Recommendation)
 
@@ -226,18 +250,33 @@ Sistem rekomendasi berbasis kemiripan konten menggunakan algoritma KNN dengan me
   - Rentan terhadap overfitting pada data kecil.
 
 **Hasil Rekomendasi**
-Input lagu
+Input lagu :
 |track_name| artists| popularity| track_genre| duration_ms|
 |--|--|--|--|--|
 |Blinding Lights | The Weeknd |91 |pop | 200040|
 
-| Lagu                                       | Artists                           |
+Hasil:
+| Lagu | Artists |
 | ------------------------------------------ | --------------------------------- |
-| Thinkin About                              | ShockOne, Lee Mvtthews            |
-| Damage Each Other                          | Steve Brian, Danni Baylor         |
+| Thinkin About | ShockOne, Lee Mvtthews |
+| Damage Each Other | Steve Brian, Danni Baylor |
 | Noise (feat. Donnis) - Rise At Night Remix | Bassnectar, Donnis, Rise At Night |
-| Runaway (U & I)                            | Galantis                          |
-| Sight Of Your Soul                         | Dirtyphonics, Sullivan King       |
+| Runaway (U & I) | Galantis |
+| Sight Of Your Soul | Dirtyphonics, Sullivan King |
+
+Input lagu:
+|track_name| artists| popularity| track_genre| duration_ms|
+|--|--|--|--|--|
+|Out of Phase| Proem |15 |pop | 227040|
+
+Hasil:
+| track_name | artists |
+| --- | --- |
+| Antidote | Dream Evil|
+| N.P.V.E.M. | Stam1na|
+| Order from Chaos | At The Gates |
+| Alone | Bullet For My Valentine |
+| Vetry Zlye | Rotting Christ |
 
 ##### 3. 🗃️ Clustering-Based Recommendations
 
@@ -245,13 +284,16 @@ Sistem rekomendasi ini mengelompokkan lagu berdasarkan fitur-fitur audionya meng
 
 - Langkah-langkah:
   - Fitur-fitur lagu di-reduksi dimensinya menggunakan PCA.
+  - Mencari jumlah cluster paling optimum dengan metode elbow.
+    ![Output Metode Elbow](https://github.com/reesa-rahayu/spotify-recommender/blob/main/images/elbow_method_output.png?raw=true)
+    Dari grafik, dapat diasumsikan nilai k yang optimum yaitu 10.
   - Algoritma K-Means diterapkan untuk mengelompokkan lagu.
-  - Diberikan lagu input, sistem merekomendasikan lagu lain dari klaster yang sama berdasarkan popularitas.
+  - Diberikan lagu input, sistem merekomendasikan lagu lain dari cluster yang sama berdasarkan popularitas.
 - ✅ Kelebihan:
   - Dapat menemukan rekomendasi yang beragam dalam satu kelompok musik.
   - Skalabilitas yang baik untuk dataset besar.
 - ⚠️ Kekurangan:
-  - Kualitas rekomendasi sangat bergantung pada hasil klastering.
+  - Kualitas rekomendasi sangat bergantung pada hasil clustering.
   - Kurang personal dibandingkan content-based filtering.
 
 **Hasil Rekomendasi**
@@ -260,13 +302,27 @@ Input lagu
 |--|--|--|--|--|
 |Blinding Lights | The Weeknd |91 |pop | 200040|
 
-| Lagu                      | Artists                    |
-| ------------------------- | -------------------------- |
-| Unholy (feat. Kim Petras) | Sam Smith, Kim Petras      |
-| Dandelions                | Ruth B.                    |
-| Call Out My Name          | The Weeknd                 |
-| Hold Me Closer            | Elton John, Britney Spears |
-| Ghost                     | Justin Bieber              |
+| Lagu                                       | Artists                           |
+| ------------------------------------------ | --------------------------------- |
+| Unholy (feat. Kim Petras)                  | Sam Smith, Kim Petras             |
+| Quevedo: Bzrp Music Sessions, Vol. 52      | Bizarrap, Quevedo                 |
+| Noise (feat. Donnis) - Rise At Night Remix | Bassnectar, Donnis, Rise At Night |
+| Dandelions                                 | Ruth B.                           |
+| Watermelon Sugar                           | Harry Styles                      |
+
+Input lagu:
+|track_name| artists| popularity| track_genre| duration_ms|
+|--|--|--|--|--|
+|Out of Phase| Proem |15 |pop | 227040|
+
+Hasil:
+| track_name | artists |
+|---|---|
+| Freaks | Surf Curse |
+| Apocalypse | Cigarettes After Sex |
+| Chamber Of Reflection | Mac DeMarco |
+| Alien Blues | Vundabar |
+| On Melancholy Hill | Gorillaz |
 
 ##### 4. 🔀 Hybrid Recommendation System
 
@@ -289,46 +345,93 @@ Model gabungan dari pendekatan popularitas dan content-based untuk mendapatkan k
   - Lebih kompleks dan membutuhkan lebih banyak data.
 
 **Hasil Rekomendasi**
-Input lagu
+Input lagu :
 |track_name| artists| popularity| track_genre| duration_ms|
 |--|--|--|--|--|
 |Blinding Lights | The Weeknd |91 |pop | 200040|
 
-| Lagu              | Artists                   |
+Hasil:
+| Lagu | Artists |
 | ----------------- | ------------------------- |
-| Secrets           | OneRepublic               |
-| Runaway (U & I)   | Galantis                  |
-| Mind Over Matter  | Young the Giant           |
+| Secrets | OneRepublic |
+| Runaway (U & I) | Galantis |
+| Mind Over Matter | Young the Giant |
 | Damage Each Other | Steve Brian, Danni Baylor |
-| Battleships       | Daughtry                  |
+| Battleships | Daughtry |
+
+Input lagu:
+|track_name| artists| popularity| track_genre| duration_ms|
+|--|--|--|--|--|
+|Out of Phase| Proem |15 |pop | 227040|
+
+Hasil:
+| track_name | artists |
+| --|--|
+| War Ensemble | Slayer |
+| "DEVILS NEVER CRY"(スタッフロール) | Capcom Sound Team |
+| Alone | Bullet For My Valentine |
+| Flesh and the Power It Holds | Death |
+| Rise Today | Alter Bridge |
 
 ## ✅ Evaluation
 
-Untuk mengevaluasi performa sistem rekomendasi, digunakan beberapa metrik umum dalam domain Information Retrieval dan Recommender System, khususnya untuk sistem berbasis Top-N recommendation.
+Untuk mengevaluasi performa sistem rekomendasi, digunakan beberapa metrik umum dalam domain Information Retrieval dan Recommender System, khususnya untuk sistem berbasis Top-N recommendation. Pada evaluasi ini, model diuji menggunakan ground truth berdasarkan genre lagu. Model juga diuji berdasarkan dua input lagu yang terkenal (The Weekend - Blinding Lights) dan yang kurang terkenal (Proem - Out of Phase)
 
 ### 🎯 Metrik Evaluasi yang Digunakan
 
-| Metrik          | Penjelasan                                                                                         |
-| --------------- | -------------------------------------------------------------------------------------------------- |
-| **Precision@K** | Persentase lagu relevan di antara K lagu yang direkomendasikan                                     |
-| **Recall@K**    | Persentase lagu relevan yang berhasil ditemukan dari seluruh lagu relevan                          |
-| **F1-Score@K**  | Harmonik rata-rata dari Precision dan Recall                                                       |
-| **MAP@K**       | Rata-rata dari precision@k pada posisi setiap lagu relevan di antara K rekomendasi                 |
-| **NDCG@K**      | Mengukur kualitas urutan rekomendasi berdasarkan relevansi dan posisi (semakin awal, semakin baik) |
+| Metrik                                                | Penjelasan                                                                                 | Formula                                                                                                           |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | --- | ---------------------------------------------------------- |
+| **Precision@K**                                       | Mengukur proporsi lagu yang relevan di antara top-`k` hasil rekomendasi.                   | $$ \text{Precision@k} = \frac{\text{Jumlah rekomendasi relevan}}{k} $$                                            |
+| **Recall@K**                                          | Mengukur proporsi lagu relevan yang berhasil ditemukan oleh sistem dalam `k` rekomendasi.  | $$ \text{Recall@k} = \frac{\text{Jumlah rekomendasi relevan}}{\text{Jumlah total lagu relevan}} $$                |
+| **F1-Score@K**                                        | armonik rata-rata dari precision dan recall, digunakan untuk menyeimbangkan keduanya.      | $$ \text{F1@k} = \frac{2 \cdot \text{Precision@k} \cdot \text{Recall@k}}{\text{Precision@k} + \text{Recall@k}} $$ |
+| **MAP@K**                                             | Mengukur rata-rata presisi kumulatif berdasarkan posisi item yang relevan dalam daftar.    | $$ \text{MAP@k} = \frac{1}{                                                                                       | R   | } \sum\_{i \in R} \frac{\text{Jumlah hits sampai i}}{i} $$ |
+| Di mana $R$ adalah daftar item relevan dalam top-`k`. |
+| **NDCG@k (Normalized Discounted Cumulative Gain)**    | Mengukur relevansi rekomendasi dengan mempertimbangkan posisi (semakin awal, semakin baik) | $$ \text{NDCG@k} = \frac{DCG@k}{IDCG@k} $$                                                                        |
 
-### 🧪 Metodologi Evaluasi
-- Dataset dibagi menjadi:
-  - 80% data pelatihan untuk membangun model
-  - 20% data uji (simulasi) untuk mengevaluasi seberapa baik model merekomendasikan lagu yang mirip dan relevan
-- Rekomendasi diberikan untuk beberapa lagu populer dan kurang populer sebagai input.
-- Setiap model memberikan Top-5 rekomendasi.
-- Diperiksa apakah lagu-lagu rekomendasi tersebut masuk dalam genre, mood, dan fitur mirip dengan ground truth lagu dari data uji.
+Di mana:  
+ $$ DCG@k = \sum\_{i=1}^k \frac{rel_i}{\log_2(i+1)} $$  
+ $$ IDCG@k = \text{DCG dari urutan ideal} $$ |
 
 ### 📈 Hasil Evaluasi – Perbandingan Antar Model
 
+**The Weekend - Blinding Lights**
+| Model | Precision@5 | Recall@5 | F1@5 | MAP@5 | NDCG@5 |
+|-------------|-------------|----------|--------|-------|---------|
+| Popularity | 0.2 | 0.0021 | 0.0042 | 0.20 | 1.0000 |
+| KNN | 0.0 | 0.0000 | 0.0000 | 0.00 | 0.0000 |
+| Clustering | 0.6 | 0.0064 | 0.0126 | 0.42 | 0.8529 |
+| Hybrid | 0.0 | 0.0000 | 0.0000 | 0.00 | 0.0000 |
 
-**🎵 Kesimpulan**: Model rekomendasi memberikan hasil yang sesuai dan relevan. Hybrid model memberikan keseimbangan antara lagu populer dan lagu yang mirip secara audio.
+**Proem - Out of Phase**
+| Model | Precision@5 | Recall@5 | F1@5 | MAP@5 | NDCG@5 |
+|------------|-------------|----------|--------|-------|---------|
+| Popularity | 0.2 | 0.0021 | 0.0042 | 0.20 | 1.0000 |
+| KNN | 0.0 | 0.0000 | 0.0000 | 0.00 | 0.0000 |
+| Clustering | 0.6 | 0.0064 | 0.0126 | 0.42 | 0.8529 |
+| Hybrid | 0.0 | 0.0000 | 0.0000 | 0.00 | 0.0000 |
 
+### 📈 Interpretasi Hasil
+
+Berdasarkan tabel yang Anda berikan, hasil evaluasi untuk kedua lagu input ("Blinding Lights" dan "Out of Phase") menunjukkan pola yang sama di antara berbagai model:
+
+- Popularity
+  Model ini memiliki Precision@5 sebesar 0.2 dan MAP@5 sebesar 0.20. Ini berarti bahwa dari 5 rekomendasi teratas, rata-rata 20% di antaranya relevan (berdasarkan ground truth genre), dan rata-rata presisi di berbagai peringkat juga 0.20. NDCG@5-nya 1.0000, yang mungkin mengindikasikan bahwa item relevan (jika ada) berada di peringkat teratas, namun dengan Recall yang sangat rendah (0.0021), jumlah item relevan yang ditemukan sangat kecil.
+- KNN
+  Semua metrik (Precision@5, Recall@5, F1@5, MAP@5, NDCG@5) bernilai 0.0. Ini menunjukkan bahwa model KNN dalam konfigurasi saat ini tidak berhasil merekomendasikan lagu yang relevan berdasarkan ground truth genre untuk kedua lagu input ini.
+
+- Clustering
+  Model ini menunjukkan Precision@5 sebesar 0.6 dan MAP@5 sebesar 0.42, yang lebih baik dari model Popularity dan KNN. Ini berarti 60% dari 5 rekomendasi teratas relevan, dan ada kinerja yang lebih baik dalam memeringkat item relevan lebih tinggi. NDCG@5 sebesar 0.8529 juga mendukung ini. Namun, Recall@5 masih rendah (0.0064), yang berarti model hanya berhasil menemukan sebagian kecil dari semua lagu relevan.
+
+- Hybrid
+  Mirip dengan KNN, semua metrik untuk model Hybrid adalah 0.0, mengindikasikan bahwa kombinasi pendekatan tidak menghasilkan rekomendasi yang relevan berdasarkan ground truth genre untuk kedua lagu ini.
+
+**🎵 Kesimpulan**
+
+- _Model clustering_ menunjukkan performa terbaik dalam menghasilkan rekomendasi lagu yang relevan dan urutan rekomendasi yang efektif.
+- _Model popularity_ masih berguna untuk memberikan rekomendasi berdasarkan popularitas, walau recall-nya rendah.
+- _Model KNN dan Hybrid_ perlu diperbaiki atau disesuaikan untuk meningkatkan kualitas rekomendasi.
+
+Dengan menggunakan
 
 ## Referensi
 
