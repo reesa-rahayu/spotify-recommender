@@ -381,7 +381,9 @@ Untuk mengevaluasi performa sistem rekomendasi, digunakan beberapa metrik umum d
 
 1. **Precision@k**  
    Mengukur proporsi lagu yang relevan di antara top-`k` hasil rekomendasi.  
-   $$ \text{Precision@k} = \frac{\text{Jumlah rekomendasi relevan}}{k} $$
+   '''math
+   \text{Precision@k} = \frac{\text{Jumlah rekomendasi relevan}}{k}
+   '''
 
 2. **Recall@k**  
    Mengukur proporsi lagu relevan yang berhasil ditemukan oleh sistem dalam `k` rekomendasi.  
