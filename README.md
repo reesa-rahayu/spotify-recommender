@@ -200,7 +200,7 @@ Rekomendasi berdasarkan tingkat popularitas lagu. Sistem ini menyarankan lagu-la
 Input lagu
 |track_name| artists| popularity| track_genre| duration_ms|
 |--|--|--|--|--|
-|Blinding Lights | The Weeknd |91 |pop 200040|
+|Blinding Lights | The Weeknd |91 |pop | 200040|
 
 | Lagu                                  | Artists                     |
 | ------------------------------------- | --------------------------- |
@@ -226,13 +226,18 @@ Sistem rekomendasi berbasis kemiripan konten menggunakan algoritma KNN dengan me
   - Rentan terhadap overfitting pada data kecil.
 
 **Hasil Rekomendasi**
-| Lagu | Artists |
-| ----------------- | ------------------------- |
-| Secrets | OneRepublic |
-| Runaway (U & I) | Galantis |
-| Mind Over Matter | Young the Giant |
-| Damage Each Other | Steve Brian, Danni Baylor |
-| Battleships | Daughtry |
+Input lagu
+|track_name| artists| popularity| track_genre| duration_ms|
+|--|--|--|--|--|
+|Blinding Lights | The Weeknd |91 |pop | 200040|
+
+| Lagu                                       | Artists                           |
+| ------------------------------------------ | --------------------------------- |
+| Thinkin About                              | ShockOne, Lee Mvtthews            |
+| Damage Each Other                          | Steve Brian, Danni Baylor         |
+| Noise (feat. Donnis) - Rise At Night Remix | Bassnectar, Donnis, Rise At Night |
+| Runaway (U & I)                            | Galantis                          |
+| Sight Of Your Soul                         | Dirtyphonics, Sullivan King       |
 
 ##### 3. 🗃️ Clustering-Based Recommendations
 
@@ -250,13 +255,18 @@ Sistem rekomendasi ini mengelompokkan lagu berdasarkan fitur-fitur audionya meng
   - Kurang personal dibandingkan content-based filtering.
 
 **Hasil Rekomendasi**
-| Lagu | Artists |
-| ----------------- | ------------------------- |
-| Secrets | OneRepublic |
-| Runaway (U & I) | Galantis |
-| Mind Over Matter | Young the Giant |
-| Damage Each Other | Steve Brian, Danni Baylor |
-| Battleships | Daughtry |
+Input lagu
+|track_name| artists| popularity| track_genre| duration_ms|
+|--|--|--|--|--|
+|Blinding Lights | The Weeknd |91 |pop | 200040|
+
+| Lagu                      | Artists                    |
+| ------------------------- | -------------------------- |
+| Unholy (feat. Kim Petras) | Sam Smith, Kim Petras      |
+| Dandelions                | Ruth B.                    |
+| Call Out My Name          | The Weeknd                 |
+| Hold Me Closer            | Elton John, Britney Spears |
+| Ghost                     | Justin Bieber              |
 
 ##### 4. 🔀 Hybrid Recommendation System
 
@@ -279,18 +289,10 @@ Model gabungan dari pendekatan popularitas dan content-based untuk mendapatkan k
   - Lebih kompleks dan membutuhkan lebih banyak data.
 
 **Hasil Rekomendasi**
-| Lagu | Artists |
-| ----------------- | ------------------------- |
-| Secrets | OneRepublic |
-| Runaway (U & I) | Galantis |
-| Mind Over Matter | Young the Giant |
-| Damage Each Other | Steve Brian, Danni Baylor |
-| Battleships | Daughtry |
-
-## ✅ Evaluation
-
-Evaluasi dilakukan menggunakan lagu **"Blinding Lights - The Weeknd"**
-Hasil yang paling relevan berdasarkan pengamatan yaitu model hybrid. Hasil yang diberikan yaitu sebagai berikut:
+Input lagu
+|track_name| artists| popularity| track_genre| duration_ms|
+|--|--|--|--|--|
+|Blinding Lights | The Weeknd |91 |pop | 200040|
 
 | Lagu              | Artists                   |
 | ----------------- | ------------------------- |
@@ -300,7 +302,12 @@ Hasil yang paling relevan berdasarkan pengamatan yaitu model hybrid. Hasil yang 
 | Damage Each Other | Steve Brian, Danni Baylor |
 | Battleships       | Daughtry                  |
 
+## ✅ Evaluation
+
+
+
 **🎵 Kesimpulan**: Model rekomendasi memberikan hasil yang sesuai dan relevan. Hybrid model memberikan keseimbangan antara lagu populer dan lagu yang mirip secara audio.
+
 
 ## Referensi
 
