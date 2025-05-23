@@ -196,13 +196,18 @@ Rekomendasi berdasarkan tingkat popularitas lagu. Sistem ini menyarankan lagu-la
   - Tidak mempertimbangkan preferensi fitur atau genre pengguna.
 
 **Hasil Rekomendasi**
-| Lagu | Artists |
-| ----------------- | ------------------------- |
-| Unholy (feat. Kim Petras) | Sam Smith, Kim Petras |
-| Quevedo: Bzrp Music Sessions, Vol. 52 | Bizarrap, Quevedo |
-| La Bachata | Manuel Turizo |
-| I'm Good (Blue) | David Guetta, Bebe Rexha |
-| Me Porto Bonito | Bad Bunny, Chencho Corleone |
+
+Input lagu
+|track_name| artists| popularity| track_genre| duration_ms|
+|Blinding Lights | The Weeknd |91 |pop 200040|
+
+| Lagu                                  | Artists                     |
+| ------------------------------------- | --------------------------- |
+| Unholy (feat. Kim Petras)             | Sam Smith, Kim Petras       |
+| Quevedo: Bzrp Music Sessions, Vol. 52 | Bizarrap, Quevedo           |
+| La Bachata                            | Manuel Turizo               |
+| I'm Good (Blue)                       | David Guetta, Bebe Rexha    |
+| Me Porto Bonito                       | Bad Bunny, Chencho Corleone |
 
 ##### 2. 🧠 K-Nearest Neighbors / KNN (Content-Based Recommendation)
 
