@@ -50,17 +50,17 @@ Dataset yang digunakan dalam proyek ini adalah [Spotify Track Dataset](https://w
 ### Karakteristik Dataset
 
 - Jumlah baris (lagu): 114000
-- Jumlah fitur/kolom: 20
+- Jumlah fitur/kolom: 21
 - Jumlah genre unik: 125
 
 ### Kualitas Data
 
-| Aspek               | Hasil                                                                         |
-| ------------------- | ----------------------------------------------------------------------------- |
-| Missing Values      | 0 (semua kolom tidak memiliki nilai kosong)                                   |
+| Aspek               | Hasil                                                                                                                            |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Missing Values      | terdapat 1 baris data yang kosong di kolom `artists`, `album_name`, `track_name`                                                 |
 | Duplikasi           | 450 duplikat. Namun, jika dilihat lagi berdasarkan `track_id` terdapat 24.259 duplikat dan 40391 duplikat duplikat `track_name`. |
-| Outlier             | Durasi Lagu dengan durasi <45 detik dan >10 menit (sekitar 0.5%)              |
-| Kolom Tidak Relevan | `Unnamed: 0` adalah index auto-generated, tidak digunakan dalam model         |
+| Outlier             | Durasi Lagu dengan durasi <45 detik dan >10 menit (sekitar 0.5%)                                                                 |
+| Kolom Tidak Relevan | `Unnamed: 0` adalah index auto-generated, tidak digunakan dalam model                                                            |
 
 ### Variabel-variabel pada dataset
 
@@ -94,13 +94,13 @@ Analisis eksploratif dilakukan untuk memahami pola, distribusi, dan hubungan ant
 Dari EDA terdapat beberapa insight yang didapatkan,antara lain:
 
 - Terdapat sebaran yang cukup luas pada durasi lagu yang ada dalam data, yaitu paling sedikit 1 milidetik hingga 1 jam lebih.
-  ![Duration Box Plot](https://github.com/reesa-rahayu/Spotify-Song-Recommendation/blob/main/images/duration%20box%20plot.png?raw=true)
+  ![Duration Box Plot](https://github.com/reesa-rahayu/spotify-recommender/blob/main/images/duration%20box%20plot.png?raw=true)
 - lagu paling populer yang ada dalam data yaitu Unholy Unholy (feat. Kim Petras) by Sam Smith.
 - Hanya ada sekitar 8% lagu yang berstatus explicit
 - genre yang paling populer yaitu pop film
-  ![Genre Popularity](https://github.com/reesa-rahayu/Spotify-Song-Recommendation/blob/main/images/genre_popularity.png?raw=true)
-- Terdapat distribusi yang rata pada jumlah lagu per genre pada data.
-  ![Genre Distribution](https://github.com/reesa-rahayu/Spotify-Song-Recommendation/blob/main/images/genre_distribution.png?raw=true)
+  ![Genre Popularity](https://github.com/reesa-rahayu/spotify-recommender/blob/main/images/genre_popularity.png?raw=true)
+- Terdapat distribusi yang rata pada jumlah lagu per genre pada data yaitu 1000 data per genre.
+  ![Genre Distribution](https://github.com/reesa-rahayu/spotify-recommender/blob/main/images/genre_distribution.png?raw=true)
 
 ## 🛠️ Data Preparation
 
@@ -114,22 +114,31 @@ Data preparation dilakukan untuk memastikan bahwa data yang digunakan dalam pemo
 
 Tujuan: Membersihkan data dari duplikasi, nilai hilang, serta outlier untuk menghindari informasi yang menyesatkan model.
 
+- **Menghapus fitur yang tidak digunakan**
+  Kolom `Unnamed: 0` dihapus karena hanya berisi index numerik tanpa nilai informasi.
+
 - **Duplicate Handling**
 
   - Tujuan: Menghapus lagu-lagu yang terduplikasi. Prioritas pertama adalah menghapus duplikat berdasarkan `track_id` dengan mempertahankan versi yang lebih populer. Selanjutnya, duplikat berdasarkan kombinasi `track_name` dan `artists` juga dihapus, dengan mempertahankan kemunculan pertama.
   - Langkah-langkah:
+
     1.  Menghapus duplikat berdasarkan `track_id`:
+
         - Data diurutkan berdasarkan popularitas menurun.
         - Duplikat berdasarkan `track_id` dihapus, mempertahankan yang pertama (paling populer).
         - Indeks data direset.
+          Sisa akhir: 89741 data.
+
     2.  Menghapus duplikat berdasarkan kombinasi `track_name` dan `artists`:
         - Duplikat berdasarkan kombinasi `track_name` dan `artists` dihapus, mempertahankan yang pertama muncul.
         - Indeks data direset.
+          Sisa akhir: 81344 data.
 
 - **Missing Value Handling**
 
   - Tujuan: Menghapus seluruh baris yang memiliki nilai kosong.
-  - Dilakukan dengan perintah `drop_na`
+  - Dilakukan dengan perintah `drop_na()`
+    Sisa akhir: 81343 data.
 
 - **Outlier Handling (Durasi Lagu)**
 
@@ -137,6 +146,7 @@ Tujuan: Membersihkan data dari duplikasi, nilai hilang, serta outlier untuk meng
   - Oleh karena itu, dilakukan pemfilteran hanya untuk lagu dengan durasi **antara 45 detik (45.000 ms)** hingga **10 menit (600.000 ms)**.
   - Alasan: Lagu yang terlalu pendek atau terlalu panjang bisa merupakan noise atau konten non-musikal, dan bisa menyesatkan sistem rekomendasi.
   - Kolom fitur lain seperti `energy`, `valence`, dll. tidak difilter karena merupakan karakteristik unik yang justru penting dalam proses rekomendasi.
+  - Total data setelah difilter: 80533 data.
 
 - **Data Type Conversion**
   Kolom `explicit` yang awalnya bertipe boolean diubah menjadi numerik (0 = tidak eksplisit, 1 = eksplisit) agar bisa digunakan dalam model machine learning.
@@ -185,6 +195,15 @@ Rekomendasi berdasarkan tingkat popularitas lagu. Sistem ini menyarankan lagu-la
 - ⚠️ Kekurangan:
   - Tidak mempertimbangkan preferensi fitur atau genre pengguna.
 
+**Hasil Rekomendasi**
+| Lagu | Artists |
+| ----------------- | ------------------------- |
+| Unholy (feat. Kim Petras) | Sam Smith, Kim Petras |
+| Quevedo: Bzrp Music Sessions, Vol. 52 | Bizarrap, Quevedo |
+| La Bachata | Manuel Turizo |
+| I'm Good (Blue) | David Guetta, Bebe Rexha |
+| Me Porto Bonito | Bad Bunny, Chencho Corleone |
+
 ##### 2. 🧠 K-Nearest Neighbors / KNN (Content-Based Recommendation)
 
 Sistem rekomendasi berbasis kemiripan konten menggunakan algoritma KNN dengan metrik cosine similarity. Setiap lagu direpresentasikan sebagai vektor fitur audio seperti `danceability`, `energy`, `valence`, `tempo`, dll.
@@ -200,6 +219,15 @@ Sistem rekomendasi berbasis kemiripan konten menggunakan algoritma KNN dengan me
   - Membutuhkan data fitur lengkap dan akurat.
   - Rentan terhadap overfitting pada data kecil.
 
+**Hasil Rekomendasi**
+| Lagu | Artists |
+| ----------------- | ------------------------- |
+| Secrets | OneRepublic |
+| Runaway (U & I) | Galantis |
+| Mind Over Matter | Young the Giant |
+| Damage Each Other | Steve Brian, Danni Baylor |
+| Battleships | Daughtry |
+
 ##### 3. 🗃️ Clustering-Based Recommendations
 
 Sistem rekomendasi ini mengelompokkan lagu berdasarkan fitur-fitur audionya menggunakan algoritma K-Means. Rekomendasi diberikan berdasarkan lagu lain dalam klaster yang sama dengan lagu input.
@@ -214,6 +242,15 @@ Sistem rekomendasi ini mengelompokkan lagu berdasarkan fitur-fitur audionya meng
 - ⚠️ Kekurangan:
   - Kualitas rekomendasi sangat bergantung pada hasil klastering.
   - Kurang personal dibandingkan content-based filtering.
+
+**Hasil Rekomendasi**
+| Lagu | Artists |
+| ----------------- | ------------------------- |
+| Secrets | OneRepublic |
+| Runaway (U & I) | Galantis |
+| Mind Over Matter | Young the Giant |
+| Damage Each Other | Steve Brian, Danni Baylor |
+| Battleships | Daughtry |
 
 ##### 4. 🔀 Hybrid Recommendation System
 
@@ -234,6 +271,15 @@ Model gabungan dari pendekatan popularitas dan content-based untuk mendapatkan k
 
 - ⚠️ Kekurangan:
   - Lebih kompleks dan membutuhkan lebih banyak data.
+
+**Hasil Rekomendasi**
+| Lagu | Artists |
+| ----------------- | ------------------------- |
+| Secrets | OneRepublic |
+| Runaway (U & I) | Galantis |
+| Mind Over Matter | Young the Giant |
+| Damage Each Other | Steve Brian, Danni Baylor |
+| Battleships | Daughtry |
 
 ## ✅ Evaluation
 
