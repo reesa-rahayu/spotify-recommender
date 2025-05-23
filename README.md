@@ -58,7 +58,7 @@ Dataset yang digunakan dalam proyek ini adalah [Spotify Track Dataset](https://w
 | Aspek               | Hasil                                                                         |
 | ------------------- | ----------------------------------------------------------------------------- |
 | Missing Values      | 0 (semua kolom tidak memiliki nilai kosong)                                   |
-| Duplikasi           | 3.172 duplikat berdasarkan `track_id`, 2.118 duplikat `track_name` + `artist` |
+| Duplikasi           | 450 duplikat. Namun, jika dilihat lagi berdasarkan `track_id` terdapat 24.259 duplikat dan 40391 duplikat duplikat `track_name`. |
 | Outlier             | Durasi Lagu dengan durasi <45 detik dan >10 menit (sekitar 0.5%)              |
 | Kolom Tidak Relevan | `Unnamed: 0` adalah index auto-generated, tidak digunakan dalam model         |
 
