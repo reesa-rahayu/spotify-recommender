@@ -441,11 +441,11 @@ Berdasarkan tabel yang Anda berikan, hasil evaluasi untuk kedua lagu input ("Bli
 
 **🎵 Kesimpulan**
 
-- _Model clustering_ menunjukkan performa terbaik dalam menghasilkan rekomendasi lagu yang relevan dan urutan rekomendasi yang efektif.
-- _Model popularity_ masih berguna untuk memberikan rekomendasi berdasarkan popularitas, walau recall-nya rendah.
-- _Model KNN dan Hybrid_ perlu diperbaiki atau disesuaikan untuk meningkatkan kualitas rekomendasi.
+- **Model clustering** menunjukkan performa terbaik dalam menghasilkan rekomendasi lagu yang relevan dan urutan rekomendasi yang efektif.
+- **Model popularity** masih berguna untuk memberikan rekomendasi berdasarkan popularitas, walau recall-nya rendah.
+- **Model KNN dan Hybrid** perlu diperbaiki atau disesuaikan untuk meningkatkan kualitas rekomendasi.
 
-Dengan menggunakan
+Dengan menggunakan model clustering, model dapat memberikan rekomendasi lagu yang relevan dengan lagu yang diinputkan dengan baik.
 
 ## Referensi
 
