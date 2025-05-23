@@ -184,7 +184,7 @@ Normalisasi penting terutama untuk algoritma berbasis jarak seperti KNN agar sem
 
 Sistem rekomendasi lagu dibangun menggunakan pendekatan berbasis popularitas, kemiripan konten (KNN), clustering, dan gabungan (hybrid) untuk hasil yang lebih relevan dan fleksibel.
 
-#### 📌 Model yang Digunakan
+### 📌 Model yang Digunakan
 
 #### 1. 📈 Popularity-Based Recommendation
 
@@ -234,7 +234,7 @@ Hasil:
 | I'm Good (Blue) | David Guetta, Bebe Rexha|
 | Tití Me Preguntó | Bad Bunny|
 
-##### 2. 🧠 K-Nearest Neighbors / KNN (Content-Based Recommendation)
+#### 2. 🧠 K-Nearest Neighbors / KNN (Content-Based Recommendation)
 
 Sistem rekomendasi berbasis kemiripan konten menggunakan algoritma KNN dengan metrik cosine similarity. Setiap lagu direpresentasikan sebagai vektor fitur audio seperti `danceability`, `energy`, `valence`, `tempo`, dll.
 
@@ -278,7 +278,7 @@ Hasil:
 | Alone | Bullet For My Valentine |
 | Vetry Zlye | Rotting Christ |
 
-##### 3. 🗃️ Clustering-Based Recommendations
+#### 3. 🗃️ Clustering-Based Recommendations
 
 Sistem rekomendasi ini mengelompokkan lagu berdasarkan fitur-fitur audionya menggunakan algoritma K-Means. Rekomendasi diberikan berdasarkan lagu lain dalam klaster yang sama dengan lagu input.
 
@@ -324,7 +324,7 @@ Hasil:
 | Alien Blues | Vundabar |
 | On Melancholy Hill | Gorillaz |
 
-##### 4. 🔀 Hybrid Recommendation System
+#### 4. 🔀 Hybrid Recommendation System
 
 Model gabungan dari pendekatan popularitas dan content-based untuk mendapatkan keseimbangan antara lagu populer dan lagu mirip secara audio.
 
