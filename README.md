@@ -304,6 +304,27 @@ Input lagu
 
 ## ✅ Evaluation
 
+Untuk mengevaluasi performa sistem rekomendasi, digunakan beberapa metrik umum dalam domain Information Retrieval dan Recommender System, khususnya untuk sistem berbasis Top-N recommendation.
+
+### 🎯 Metrik Evaluasi yang Digunakan
+
+| Metrik          | Penjelasan                                                                                         |
+| --------------- | -------------------------------------------------------------------------------------------------- |
+| **Precision@K** | Persentase lagu relevan di antara K lagu yang direkomendasikan                                     |
+| **Recall@K**    | Persentase lagu relevan yang berhasil ditemukan dari seluruh lagu relevan                          |
+| **F1-Score@K**  | Harmonik rata-rata dari Precision dan Recall                                                       |
+| **MAP@K**       | Rata-rata dari precision@k pada posisi setiap lagu relevan di antara K rekomendasi                 |
+| **NDCG@K**      | Mengukur kualitas urutan rekomendasi berdasarkan relevansi dan posisi (semakin awal, semakin baik) |
+
+### 🧪 Metodologi Evaluasi
+- Dataset dibagi menjadi:
+  - 80% data pelatihan untuk membangun model
+  - 20% data uji (simulasi) untuk mengevaluasi seberapa baik model merekomendasikan lagu yang mirip dan relevan
+- Rekomendasi diberikan untuk beberapa lagu populer dan kurang populer sebagai input.
+- Setiap model memberikan Top-5 rekomendasi.
+- Diperiksa apakah lagu-lagu rekomendasi tersebut masuk dalam genre, mood, dan fitur mirip dengan ground truth lagu dari data uji.
+
+### 📈 Hasil Evaluasi – Perbandingan Antar Model
 
 
 **🎵 Kesimpulan**: Model rekomendasi memberikan hasil yang sesuai dan relevan. Hybrid model memberikan keseimbangan antara lagu populer dan lagu yang mirip secara audio.
