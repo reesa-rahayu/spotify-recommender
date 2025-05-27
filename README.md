@@ -18,14 +18,14 @@ Melalui pendekatan berbasis **content-based filtering** dan **popularity-based r
 
 ### ❓ Problem Statements
 
-- Dengan jutaan lagu tersedia di platform seperti Spotify, pengguna sering kewalahan dalam menemukan lagu yang sesuai dengan preferensi mereka secara cepat dan akurat.
-- Rekomendasi umum berbasis popularitas sering kali tidak relevan secara personal karena tidak mempertimbangkan kesamaan fitur musik antar lagu
-- Sistem rekomendasi berbasis histori pengguna (collaborative filtering) membutuhkan data pengguna yang kadang tidak tersedia, membatasi kemampuannya dalam memberikan rekomendasi bagi pengguna baru (cold start problem).
+- Bagaimana membangun sistem rekomendasi lagu yang personal dan akurat tanpa bergantung pada data historis pengguna?
+- Apakah algoritma content-based filtering dapat meningkatkan relevansi rekomendasi untuk pengguna baru di platform seperti Spotify?
+- Bagaimana mengukur efektivitas sistem rekomendasi berbasis fitur lagu?
 
 ### 🎯 Goals
 
-- Mengembangkan sistem rekomendasi lagu berbasis konten (content-based) yang mampu menyarankan lagu-lagu serupa berdasarkan fitur musik, tanpa perlu histori pendengaran pengguna.
-- Menggunakan algoritma K-Nearest Neighbors (KNN) dengan metrik cosine similarity untuk mengukur kedekatan antar lagu berdasarkan fitur seperti danceability, valence, tempo, energy, dll.
+- Mengembangkan sistem rekomendasi lagu berbasis konten (content-based) yang mampu menyarankan lagu-lagu serupa berdasarkan fitur musik, tanpa perlu histori pendengaran pengguna.menggunakan algoritma K-Nearest Neighbors (KNN) dengan metrik cosine similarity untuk mengukur kedekatan antar lagu berdasarkan fitur seperti danceability, valence, tempo, energy, dll.
+- 
 - Menyediakan hasil rekomendasi yang relevan berdasarkan karakteristik lagu input, serta mengeksplorasi metode hybrid dengan mempertimbangkan popularitas dan karakteristik lagu.
 
 ### Solution statements
